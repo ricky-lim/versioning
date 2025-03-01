@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Added
+
+- Add token to push changes to main from workflow
+
 ## [0.4.0] - 2025-03-01
 
 ### Added
