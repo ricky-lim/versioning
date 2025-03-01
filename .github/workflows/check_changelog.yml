@@ -1,0 +1,39 @@
+name: Check CHANGELOG
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          if [[ $PR_BRANCH == bugfix/* ]]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == feature/* ]]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == release/* ]]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          fi
+      - name: Check CHANGELOG updates
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          # Ensure CHANGELOG is ready
+          if ! grep -q "## NEXT" CHANGELOG.md; then
+            echo "ERROR: CHANGELOG.md must contain '## NEXT' section"
+            exit 1
+          fi
+
+          # Check if there are changes under NEXT
+          NEXT_SECTION=$(sed -n '/## NEXT/,/##/p' CHANGELOG.md | grep -v "## NEXT" | grep -v "##" | tr -d '\n' | tr -d ' ')
+          if [ -z "$NEXT_SECTION" ]; then
+            echo "ERROR: No changes documented under ## NEXT in CHANGELOG.md"
+            exit 1
