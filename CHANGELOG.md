@@ -6,6 +6,7 @@
 ### Added
 
 - Document branch protection configuration and setup in README.md
+- Do not enforce admin to the branch protection rules
 
 ## [0.5.0] - 2025-03-01
 
