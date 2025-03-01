@@ -3,6 +3,10 @@
 
 ## NEXT
 
+### Added
+
+- Added user to push changes to main from workflow
+
 ### Changed
 
 - Add branch protection rules to enforce proper changelog format and block merging if checks fail

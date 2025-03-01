@@ -13,9 +13,9 @@
     },
     "restrictions": null,
     "required_linear_history": true,
-    "allow_force_pushes": false,
-    "allow_deletions": false,
-    "bypass_force_push_allowances": {
-        "apps": ["github-actions[bot]"]
-    }
+    "allow_force_pushes": true,
+    "allow_force_pushes_to_allow": {
+        "users": ["ricky-lim"]
+    },
+    "allow_deletions": false
 }
