@@ -58,7 +58,10 @@ jobs:
           sed -i.bak "s/## NEXT/## [$NEW_VERSION] - $DATE/" CHANGELOG.md
           rm CHANGELOG.md.bak
           git add CHANGELOG.md
-          git commit -m "docs: update changelog for $NEW_VERSION [skip ci]"
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+            commit_message: "Bump version to $NEW_VERSION"
 
       - name: Push changes
         if: steps.bump-type.outputs.bump != ''
