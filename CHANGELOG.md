@@ -3,9 +3,9 @@
 
 ## NEXT
 
-### REMOVED
+### Added
 
-- Remove token
+- Add token to push changes to main from workflow
 
 ## [0.4.0] - 2025-03-01
 
