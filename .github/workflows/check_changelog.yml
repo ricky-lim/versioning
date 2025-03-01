@@ -37,3 +37,4 @@ jobs:
           if [ -z "$NEXT_SECTION" ]; then
             echo "ERROR: No changes documented under ## NEXT in CHANGELOG.md"
             exit 1
+          fi
