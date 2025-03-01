@@ -23,18 +23,32 @@ jobs:
           elif [[ $PR_BRANCH == release/* ]]; then
             echo "bump=major" >> $GITHUB_OUTPUT
           fi
-      - name: Check CHANGELOG updates
+      - name: Check CHANGELOG format
         if: steps.bump-type.outputs.bump != ''
         run: |
-          # Ensure CHANGELOG is ready
-          if ! grep -q "## NEXT" CHANGELOG.md; then
-            echo "ERROR: CHANGELOG.md must contain '## NEXT' section"
+          # Check if CHANGELOG exists
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md file not found"
             exit 1
           fi
 
-          # Check if there are changes under NEXT
-          NEXT_SECTION=$(sed -n '/## NEXT/,/##/p' CHANGELOG.md | grep -v "## NEXT" | grep -v "##" | tr -d '\n' | tr -d ' ')
-          if [ -z "$NEXT_SECTION" ]; then
-            echo "ERROR: No changes documented under ## NEXT in CHANGELOG.md"
+          # Check for NEXT section with proper format
+          NEXT_PATTERN=$'^## NEXT\n\n### '
+          if ! grep -A1 "^## NEXT$" CHANGELOG.md | tr -d '\r' | grep -q "^$"; then
+            echo "::error::CHANGELOG.md must have an empty line after '## NEXT'"
             exit 1
           fi
+
+          if ! grep -A2 "^## NEXT$" CHANGELOG.md | grep -q "^### "; then
+            echo "::error::CHANGELOG.md must have a section header (e.g., '### Added') after the empty line"
+            exit 1
+          fi
+
+          # Check for changes under NEXT
+          NEXT_SECTION=$(sed -n '/^## NEXT$/,/^## /p' CHANGELOG.md | tail -n +4)
+          if [ -z "$NEXT_SECTION" ]; then
+            echo "::error::No changes documented under section in CHANGELOG.md"
+            exit 1
+          fi
+
+          echo "CHANGELOG format validation passed"
