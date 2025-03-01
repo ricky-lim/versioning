@@ -1,0 +1,17 @@
+[project]
+name = "versioning"
+version = "0.1.0"
+description = "Demo versioning python project"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bump-my-version>=0.32.2",
+]
+
+[project.scripts]
+demo = "demo.cli:app"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0",
+]
