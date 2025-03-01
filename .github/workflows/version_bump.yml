@@ -1,0 +1,67 @@
+name: Version Bump
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bump-my-version
+        run: pip install bump-my-version
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          if [[ $PR_BRANCH == bugfix/* ]]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == feature/* ]]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == release/* ]]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version and Update CHANGELOG
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          # Bump the version
+          bump-my-version bump ${{ steps.bump-type.outputs.bump }}
+
+          # Get the new version
+          NEW_VERSION=$(grep 'version = ' pyproject.toml | cut -d'"' -f2)
+          DATE=$(date +%Y-%m-%d)
+          # Replace NEXT with version and date
+          sed -i.bak "s/## NEXT/## [$NEW_VERSION] - $DATE/" CHANGELOG.md
+          rm CHANGELOG.md.bak
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog for $NEW_VERSION [skip ci]"
+
+      - name: Push changes
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          git push origin main
+          git push --tags
