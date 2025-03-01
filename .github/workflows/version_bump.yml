@@ -46,11 +46,22 @@ jobs:
       - name: Bump version and update CHANGELOG.md
         if: steps.bump-type.outputs.bump != ''
         run: |
+          # Ensure CHANGELOG is ready
+          if ! grep -q "## NEXT" CHANGELOG.md; then
+            echo "ERROR: CHANGELOG.md must contain '## NEXT' section"
+            exit 1
+          fi
+
+          # Check if there are changes under NEXT
+          NEXT_SECTION=$(sed -n '/## NEXT/,/##/p' CHANGELOG.md | grep -v "## NEXT" | grep -v "##" | tr -d '\n' | tr -d ' ')
+          if [ -z "$NEXT_SECTION" ]; then
+            echo "ERROR: No changes documented under ## NEXT in CHANGELOG.md"
+            exit 1
+
           # Bump the version
           bump-my-version bump ${{ steps.bump-type.outputs.bump }}
 
           NEW_VERSION=$(grep 'version = ' pyproject.toml | cut -d'"' -f2)
-          echo $NEW_VERSION
           DATE=$(date +%Y-%m-%d)
           # Replace NEXT with version and date
           sed -i.bak "s/## NEXT/## [$NEW_VERSION] - $DATE/" CHANGELOG.md
