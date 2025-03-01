@@ -50,7 +50,6 @@ jobs:
           bump-my-version bump ${{ steps.bump-type.outputs.bump }}
 
           NEW_VERSION=$(grep 'version = ' pyproject.toml | cut -d'"' -f2)
-          echo $NEW_VERSION
           DATE=$(date +%Y-%m-%d)
           # Replace NEXT with version and date
           sed -i.bak "s/## NEXT/## [$NEW_VERSION] - $DATE/" CHANGELOG.md
