@@ -1,0 +1,55 @@
+name: Version Bump
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bump-my-version
+        run: pip install bump-my-version
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          if [[ $PR_BRANCH == bugfix/* ]]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == feature/* ]]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == release/* ]]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          bump-my-version bump ${{ steps.bump-type.outputs.bump }}
+
+      - name: Push changes
+        if: steps.bump-type.outputs.bump != ''
+        run: git push --tags
