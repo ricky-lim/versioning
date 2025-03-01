@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Added
+
+- Document branch protection configuration and setup in README.md
+
 ## [0.5.0] - 2025-03-01
 
 ### Added
