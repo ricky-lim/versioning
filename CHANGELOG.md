@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Add branch protection rules to enforce proper changelog format and block merging if checks fail
+
 ## [0.3.0] - 2025-03-01
 
 ### Added

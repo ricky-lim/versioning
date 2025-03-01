@@ -3,8 +3,7 @@
         "strict": true,
         "contexts": [
             "lint",
-            "test",
-            "build"
+            "check-changelog"
         ]
     },
     "enforce_admins": true,
