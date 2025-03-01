@@ -6,6 +6,7 @@ from pathlib import Path
 def app():
     print(f"Version: {get_version()}")
 
+
 def get_version() -> str:
     """Get the version"""
     try:
