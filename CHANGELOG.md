@@ -6,6 +6,8 @@
 ### Changed
 
 - Add branch protection rules to enforce proper changelog format and block merging if checks fail
+- Configure branch protection to allow automated version bumping via github-actions[bot]
+
 
 ## [0.3.0] - 2025-03-01
 
