@@ -63,28 +63,18 @@ jobs:
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md for version $NEW_VERSION"
 
-      - name: Push and verify tags
+      - name: Push changes
+        id: push
         if: steps.bump-type.outputs.bump != ''
-        id: push-verify
         continue-on-error: true
+        env:
+            GH_TOKEN: "invalid token"
         run: |
-          OLD_TAGS=$(git tag -l | wc -l)
-          echo "Old tags: $OLD_TAGS"
           git push origin main
           git push --tags
-          NEW_TAGS=$(git tag -l | wc -l)
-          echo "New tags: $NEW_TAGS"
-          if [ "$NEW_TAGS" -le "$OLD_TAGS" ]; then
-            echo "No new tags were created"
-            exit 1
-          fi
-          echo "Test"
-          exit 1
 
-      - name: Revert changes on failure
-        if: failure() && steps.push-verify.outcome == 'failure'
+      - name: Revert on push failure
+        if: steps.push.outcome == 'failure'
         run: |
-          git reset --hard ${{ steps.version-bump.outputs.initial_commit }}
+          git reset --hard ${{ steps.initial-state.outputs.commit }}
           git push -f origin main
-          git tag -l | xargs git push --delete origin
-          git tag -l | xargs git tag -d

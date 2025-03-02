@@ -1,6 +1,13 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Changed the automatic reversion when push to main fails
+- Test
+
 ## [0.7.0] - 2025-03-02
 
 ### Changed
@@ -10,7 +17,6 @@
 ### Added
 
 - Added tag verification and automatic reversion in `version_bump.yml`
-- Test
 
 ## [0.6.0] - 2025-03-01
 
