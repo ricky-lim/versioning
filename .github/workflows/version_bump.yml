@@ -47,6 +47,7 @@ jobs:
           fi
 
       - name: Bump version and update CHANGELOG.md
+        id: bump-version
         if: steps.bump-type.outputs.bump != ''
         run: |
           # Store initial commit for potential revert
@@ -72,7 +73,10 @@ jobs:
           exit 1
 
       - name: Revert on push failure
+        id: revert-push
         if: failure()
         run: |
-          git reset --hard ${{ steps.initial-state.outputs.commit }}
+          echo "Reverting changes due to push failure"
+          echo "Revering to commit ${{ steps.bump-version.outputs.initial_commit }}"
+          git reset --hard ${{ steps.bump-version.outputs.initial_commit }}"
           git push -f origin main
