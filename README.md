@@ -40,7 +40,9 @@ bump-my-version bump major  # For major version: 0.9.0 -> 1.0.0
 
 ```
 # Get the latest version including tags
-git pull origin --tags
+git checkout main
+git pull origin main
+git fetch --tags
 
 # Create a new branch for your work
 # For features
