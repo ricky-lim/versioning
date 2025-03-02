@@ -66,15 +66,13 @@ jobs:
       - name: Push changes
         id: push
         if: steps.bump-type.outputs.bump != ''
-        continue-on-error: true
-        env:
-            GH_TOKEN: "invalid token"
         run: |
           git push origin main
           git push --tags
+          exit 1
 
       - name: Revert on push failure
-        if: steps.push.outcome == 'failure'
+        if: failure()
         run: |
           git reset --hard ${{ steps.initial-state.outputs.commit }}
           git push -f origin main
