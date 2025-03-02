@@ -7,6 +7,12 @@
 
 - Enhanced project documentation with structure overview, workflow guides, and setup instructions.
 
+## [0.10.0] - 2025-03-02
+
+### Changed
+
+- Integrated bump-my-version configuration directly in pyproject.toml
+
 ## [0.9.0] - 2025-03-02
 
 ### Added
