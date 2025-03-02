@@ -10,6 +10,7 @@
 ### Added
 
 - Added tag verification and automatic reversion in `version_bump.yml`
+- Test
 
 ## [0.6.0] - 2025-03-01
 
