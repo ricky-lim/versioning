@@ -50,7 +50,8 @@ jobs:
         if: steps.bump-type.outputs.bump != ''
         run: |
           # Store initial commit for potential revert
-          echo "initial_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          COMMIT_HASH=$(git rev-parse HEAD)
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
 
           # Bump the version
           bump-my-version bump ${{ steps.bump-type.outputs.bump }}
@@ -74,5 +75,6 @@ jobs:
       - name: Revert on push failure
         if: failure()
         run: |
-          git reset --hard ${{ steps.initial-state.outputs.commit }}
+          echo "Reverting to commit hash: $COMMIT_HASH"
+          git reset --hard $COMMIT_HASH
           git push -f origin main

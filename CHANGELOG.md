@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Fixed
+
+- Fixed the commit hash to revert in `version_bump.yml`
+
 ## [0.8.1] - 2025-03-02
 
 ### Fixed
