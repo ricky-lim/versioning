@@ -6,6 +6,7 @@
 ### Fixed
 
 - Fixed the commit hash to revert in `version_bump.yml`
+- Test
 
 ## [0.8.0] - 2025-03-02
 
