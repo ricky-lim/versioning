@@ -1,7 +1,13 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
-## NEXT
+## Next
+
+### Fixed
+
+- Fixed the push to main workflow if push to main fails
+
+## [0.8.0] - 2025-03-02
 
 ### Changed
 
