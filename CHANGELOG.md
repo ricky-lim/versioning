@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Integrated bump-my-version configuration directly in pyproject.toml
+
 ## [0.9.0] - 2025-03-02
 
 ### Added
