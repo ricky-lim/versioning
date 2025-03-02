@@ -1,11 +1,11 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
-## Next
+## NEXT
 
 ### Fixed
 
-- Revert the push to main workflow if push to main fails
+- Fixed the commit hash to revert in `version_bump.yml`
 
 ## [0.8.0] - 2025-03-02
 
