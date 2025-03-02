@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Enhanced project documentation with structure overview, workflow guides, and setup instructions.
+
 ## [0.10.0] - 2025-03-02
 
 ### Changed
