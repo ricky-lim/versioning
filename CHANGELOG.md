@@ -7,6 +7,7 @@
 
 - Fixed the commit hash to revert in `version_bump.yml`
 - Test with removing tag
+- Fix dirty commit
 
 ## [0.8.0] - 2025-03-02
 
