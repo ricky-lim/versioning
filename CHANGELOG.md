@@ -7,12 +7,6 @@
 
 - Fixed the commit hash to revert in `version_bump.yml`
 
-## [0.8.1] - 2025-03-02
-
-### Fixed
-
-- Fixed the push to main workflow if push to main fails
-
 ## [0.8.0] - 2025-03-02
 
 ### Changed
