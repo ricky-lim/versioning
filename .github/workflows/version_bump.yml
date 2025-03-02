@@ -78,5 +78,5 @@ jobs:
         run: |
           echo "Reverting changes due to push failure"
           echo "Revering to commit ${{ steps.bump-version.outputs.initial_commit }}"
-          git reset --hard ${{ steps.bump-version.outputs.initial_commit }}"
+          git reset --hard ${{ steps.bump-version.outputs.initial_commit }}
           git push -f origin main
