@@ -3,11 +3,9 @@
 
 ## NEXT
 
-### Fixed
+### Added
 
-- Fixed the commit hash to revert in `version_bump.yml`
-- Test with removing tag
-- Fix dirty commit
+- Added revert main branch and tag in `version_bump.yml`
 
 ## [0.8.0] - 2025-03-02
 
