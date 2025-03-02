@@ -1,6 +1,17 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Changed WORKFLOW_TOKEN to VERSIONING_WORKFLOW_TOKEN
+
+### Added
+
+- Added tag verification and automatic reversion in `version_bump.yml`
+- Test
+
 ## [0.6.0] - 2025-03-01
 
 ### Added

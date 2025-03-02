@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+          token: ${{ secrets.VERSIONING_WORKFLOW_TOKEN }}
           ref: main
 
       - name: Set up Python
@@ -49,6 +49,9 @@ jobs:
       - name: Bump version and update CHANGELOG.md
         if: steps.bump-type.outputs.bump != ''
         run: |
+          # Store initial commit for potential revert
+          echo "initial_commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
           # Bump the version
           bump-my-version bump ${{ steps.bump-type.outputs.bump }}
 
@@ -60,8 +63,28 @@ jobs:
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md for version $NEW_VERSION"
 
-      - name: Push changes
+      - name: Push and verify tags
         if: steps.bump-type.outputs.bump != ''
+        id: push-verify
+        continue-on-error: true
         run: |
+          OLD_TAGS=$(git tag -l | wc -l)
+          echo "Old tags: $OLD_TAGS"
           git push origin main
           git push --tags
+          NEW_TAGS=$(git tag -l | wc -l)
+          echo "New tags: $NEW_TAGS"
+          if [ "$NEW_TAGS" -le "$OLD_TAGS" ]; then
+            echo "No new tags were created"
+            exit 1
+          fi
+          echo "Test"
+          exit 1
+
+      - name: Revert changes on failure
+        if: failure() && steps.push-verify.outcome == 'failure'
+        run: |
+          git reset --hard ${{ steps.version-bump.outputs.initial_commit }}
+          git push -f origin main
+          git tag -l | xargs git push --delete origin
+          git tag -l | xargs git tag -d
