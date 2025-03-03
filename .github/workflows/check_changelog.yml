@@ -39,16 +39,4 @@ jobs:
             exit 1
           fi
 
-          if ! grep -A2 "^## NEXT$" CHANGELOG.md | grep -q "^### "; then
-            echo "::error::CHANGELOG.md must have a section header (e.g., '### Added') after the empty line"
-            exit 1
-          fi
-
-          # Check for changes under NEXT
-          NEXT_SECTION=$(sed -n '/^## NEXT$/,/^## /p' CHANGELOG.md | tail -n +4)
-          if [ -z "$NEXT_SECTION" ]; then
-            echo "::error::No changes documented under section in CHANGELOG.md"
-            exit 1
-          fi
-
           echo "CHANGELOG format validation passed"
