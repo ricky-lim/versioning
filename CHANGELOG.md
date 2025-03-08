@@ -1,6 +1,12 @@
 # Changelog
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
 
+## NEXT
+
+### Changed
+
+- Changed to use pre-commit hooks to check `CHANGELOG.md`
+
 ## [0.11.0] - 2025-03-02
 
 ### Changed
