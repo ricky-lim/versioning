@@ -1,0 +1,42 @@
+name: Check CHANGELOG
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          if [[ $PR_BRANCH == bugfix/* ]]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == feature/* ]]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [[ $PR_BRANCH == release/* ]]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          fi
+      - name: Check CHANGELOG format
+        if: steps.bump-type.outputs.bump != ''
+        run: |
+          # Check if CHANGELOG exists
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md file not found"
+            exit 1
+          fi
+
+          # Check for NEXT section with proper format
+          NEXT_PATTERN=$'^## NEXT\n\n### '
+          if ! grep -A1 "^## NEXT$" CHANGELOG.md | tr -d '\r' | grep -q "^$"; then
+            echo "::error::CHANGELOG.md must have an empty line after '## NEXT'"
+            exit 1
+          fi
+
+          echo "CHANGELOG format validation passed"

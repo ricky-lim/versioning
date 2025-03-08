@@ -7,6 +7,10 @@
 
 - Changed to use pre-commit hooks to check `CHANGELOG.md`
 
+## [0.12.0] - 2025-03-03
+
+- Simplified changelog check in `check_changelog.yml` to check only the presence of NEXT header
+
 ## [0.11.0] - 2025-03-02
 
 ### Changed
