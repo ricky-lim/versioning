@@ -1,4 +1,4 @@
-name: pull request
+name: pre-commit
 
 on:
   pull_request:
@@ -17,3 +17,7 @@ jobs:
       - uses: pre-commit/action@v3.0.0
         env:
           SKIP: no-commit-to-branch
+
+      - name: Run check-changelog hook manually
+        run: |
+          pre-commit run check-changelog --hook-stage pre-push --all-files --verbose
